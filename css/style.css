@@ -101,7 +101,7 @@ main { margin-top: var(--header-height); }
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  background-image: url("../img/fondo.jpg");
+  background-image: url(../img/fondo.png);
   background-size: cover;
   background-position: center;
   background-attachment: fixed; /* fallback for desktop / Android */
