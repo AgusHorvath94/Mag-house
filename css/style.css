@@ -213,7 +213,7 @@ main { margin-top: var(--header-height); }
   justify-content: space-between;
   gap: 60px;
   margin-top: 30px;
-  padding: 0 10px;
+  padding: 0px;
 }
 
 .sist-texto-col { width: 50%; text-align: center; font-size: 26px; color: var(--color-secondary); line-height: 1.6; padding-right: 10px; }
@@ -258,14 +258,13 @@ main { margin-top: var(--header-height); }
   margin-bottom: 14px;
   text-shadow: 0 0 10px rgba(255,122,0,0.25);
 }
-/* Centrar el cuadro de sistemas en celular */
-@media (max-width: 900px) {
-  .cuadrado-grid {
-    width: 100% !important;    /* ocupar todo el ancho disponible */
-    max-width: 520px;           /* no crecer demasiado */
-    margin: 0 auto;             /* centrar horizontalmente */
-  }
+
+.cuadrado-grid li:hover {
+  transform: translateY(-8px);   /* se eleva ligeramente */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.20); /* sombra más intensa */
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
+
 
 /* ---------------------------
    APLICACIONES
@@ -347,6 +346,11 @@ main { margin-top: var(--header-height); }
   color: var(--color-primary);
   margin-right: 12px;
   font-size: 1.2rem;
+}
+
+.lista-aplicaciones {
+  padding: 0px;
+  margin: 0px;
 }
 
 /* ---------------------------
