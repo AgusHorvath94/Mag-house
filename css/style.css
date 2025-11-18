@@ -258,6 +258,14 @@ main { margin-top: var(--header-height); }
   margin-bottom: 14px;
   text-shadow: 0 0 10px rgba(255,122,0,0.25);
 }
+/* Centrar el cuadro de sistemas en celular */
+@media (max-width: 900px) {
+  .cuadrado-grid {
+    width: 100% !important;    /* ocupar todo el ancho disponible */
+    max-width: 520px;           /* no crecer demasiado */
+    margin: 0 auto;             /* centrar horizontalmente */
+  }
+}
 
 /* ---------------------------
    APLICACIONES
