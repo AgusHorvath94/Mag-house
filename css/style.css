@@ -347,3 +347,13 @@ main { margin-top: 110px; }
     object-fit: cover;
   }
 }
+
+@media (max-width: 768px) {
+  .contenido {
+    padding-right: 65px !important;  /* más espacio a la derecha */
+    padding-left: 30px !important;   /* suave a la izquierda para mantener alineación */
+    text-align: left !important;
+    align-items: flex-start !important;
+    
+  }
+}
