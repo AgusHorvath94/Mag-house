@@ -1,27 +1,37 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Elms+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* Variables */
 :root {
   --naranja-transparente: rgba(255, 122, 0, 0.4);
   --color-primary: #ff7a00;
   --color-secondary: #2b2929;
   --texto-blanco: #fff;
   --fuente-principal: "Elms Sans", sans-serif;
+  --header-height: 110px;
 }
 
-/* Reset */
+/* ---------------------------
+   RESET / BASE
+   --------------------------- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
   font-family: var(--fuente-principal);
   background-color: #fff;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Secciones animadas */
-section { scroll-margin-top: 110px; }
+a { text-decoration: none; color: inherit; }
 
-/* Animaciones */
+/* Global section offset for anchor navigation */
+section { scroll-margin-top: var(--header-height); }
+
+/* ---------------------------
+   ANIMACIONES GENERALES
+   --------------------------- */
+/* Scroll-triggered helpers (usadas por JS intersection observer) */
 .animate-left { opacity: 0; transform: translateX(-50px); transition: opacity 1s ease, transform 1s ease; }
 .animate-left.visible { opacity: 1; transform: translateX(0); }
 
@@ -31,17 +41,38 @@ section { scroll-margin-top: 110px; }
 .animate-fade { opacity: 0; transition: opacity 1s ease; }
 .animate-fade.visible { opacity: 1; }
 
-/* Header */
-header { position: fixed; top: 0; width: 100%; z-index: 1000; }
+/* iOS-friendly content fade (uses opacity + blur, compatible con Safari iOS) */
+@keyframes fadeInIOS {
+  0% {
+    opacity: 0;
+    filter: blur(6px);
+    /* avoid transform as first-frame on iOS */
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
 
-/* Navbar */
+/* Small hover lift used on cards */
+.card-hover-up {
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.card-hover-up:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.14); }
+
+/* ---------------------------
+   HEADER / NAVBAR
+   --------------------------- */
+header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; }
+
 .navbar-nav .nav-link {
   color: var(--color-secondary);
   font-size: 18px;
   font-weight: 500;
 }
-.navbar-nav .nav-link:hover { color: var(--color-primary); transition: 0.3s; }
+.navbar-nav .nav-link:hover { color: var(--color-primary); transition: color .25s ease; }
 
+/* custom hamburger icon (keeps your look) */
 .navbar-toggler { border: none; }
 .navbar-toggler-icon-custom {
   display: block; width: 30px; height: 3px;
@@ -57,21 +88,28 @@ header { position: fixed; top: 0; width: 100%; z-index: 1000; }
 .navbar-toggler-icon-custom::before { top: -10px; }
 .navbar-toggler-icon-custom::after { top: 10px; }
 
-/* MAIN */
-main { margin-top: 110px; }
+/* ---------------------------
+   MAIN LAYOUT
+   --------------------------- */
+main { margin-top: var(--header-height); }
 
-/* HERO */
+/* ---------------------------
+   HERO
+   --------------------------- */
 .hero {
-  height: calc(100vh - 110px);
+  height: calc(100vh - var(--header-height));
   display: flex;
   align-items: center;
   justify-content: flex-end;
   background-image: url("../img/fondo.jpg");
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
+  background-attachment: fixed; /* fallback for desktop / Android */
+  position: relative;
+  overflow: hidden;
 }
 
+/* contenido dentro del rectángulo naranja */
 .contenido {
   background-color: var(--naranja-transparente);
   color: var(--texto-blanco);
@@ -80,17 +118,23 @@ main { margin-top: 110px; }
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
+
+  /* animación iOS-friendly */
   opacity: 0;
-  transform: translateX(100%);
-  animation: slideIn 1.2s ease-out forwards;
+  animation: fadeInIOS 1.3s ease-out forwards;
+  will-change: opacity, filter;
+  text-align: left;
+  align-self: center;
 }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(100%); }
-  to { opacity: 1; transform: translateX(0); }
+/* Si querés reducir tamaño en pantallas muy pequeñas (mantiene diseño) */
+@media (max-width: 420px) {
+  .contenido { padding: 2.2rem; width: 85%; }
 }
 
-/* QUIÉNES SOMOS */
+/* ---------------------------
+   QUIÉNES SOMOS
+   --------------------------- */
 .quienes-somos {
   display: flex;
   align-items: center;
@@ -117,6 +161,7 @@ main { margin-top: 110px; }
   overflow: hidden;
 }
 
+/* decorativas 'casita' */
 .casa {
   position: absolute;
   background: rgba(255, 122, 0, 0.30);
@@ -125,14 +170,15 @@ main { margin-top: 110px; }
   animation: moverCasita 6s ease-in-out infinite alternate;
   clip-path: polygon(50% 0%, 100% 35%, 100% 100%, 0% 100%, 0% 35%);
 }
-
 .casa1 { width: 260px; height: 260px; top: -20px; left: -40px; opacity: 0.32; }
 .casa2 { width: 340px; height: 340px; bottom: -30px; right: -30px; opacity: 0.28; animation-duration: 7.5s; }
 .casa3 { width: 200px; height: 200px; top: 35%; left: 55%; opacity: 0.26; animation-duration: 5.5s; }
 
 @keyframes moverCasita { 0% { transform: translateX(-12px); } 100% { transform: translateX(12px); } }
 
-/* SISTEMAS */
+/* ---------------------------
+   SISTEMAS
+   --------------------------- */
 .sistemas {
   background-image: url("../img/fondo-siste.jpg");
   background-size: cover;
@@ -157,7 +203,6 @@ main { margin-top: 110px; }
   width: 100%;
   margin-top: 10px;
 }
-
 .sist-imagen img { width: 100%; height: 340px; object-fit: cover; border-radius: 12px; }
 
 .sist-dos-columnas {
@@ -176,6 +221,9 @@ main { margin-top: 110px; }
 .p-sist1 { font-size: 50px; }
 
 .sist-cuadrado { width: 50%; display: flex; justify-content: center; align-items: center; }
+
+
+
 
 .cuadrado-grid {
   list-style: none;
@@ -201,6 +249,7 @@ main { margin-top: 110px; }
   color: var(--color-secondary);
   text-align: center;
   box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+  transition: transform .22s ease, box-shadow .22s ease;
 }
 
 .cuadrado-grid li i {
@@ -210,28 +259,9 @@ main { margin-top: 110px; }
   text-shadow: 0 0 10px rgba(255,122,0,0.25);
 }
 
-.cuadrado-grid li:hover {
-  transform: translateY(-6px);
-  transition: transform 220ms ease;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.14);
-}
-
-/* UBICACIÓN */
-.ubicacion {
-  padding: 80px 5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 30px;
-  background-color: #f8f8f8;
-}
-
-.ubicacion h1 { font-size: clamp(2rem, 5vw, 3rem); color: var(--color-secondary); }
-
-.mapa { width: 100%; max-width: 1200px; height: 500px; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-
-/* APLICACIONES */
+/* ---------------------------
+   APLICACIONES
+   --------------------------- */
 .aplicaciones {
   padding: 80px 5%;
   background-color: #fff;
@@ -276,9 +306,28 @@ main { margin-top: 110px; }
   margin-bottom: 12px;
   color: var(--color-secondary);
 }
-
 .aplicaciones-texto ul li i { color: var(--color-primary); margin-right: 12px; font-size: 1.4rem; }
 
+/* ---------------------------
+   UBICACIÓN / MAPA
+   --------------------------- */
+.ubicacion {
+  padding: 80px 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 30px;
+  background-color: #f8f8f8;
+}
+
+.ubicacion h1 { font-size: clamp(2rem, 5vw, 3rem); color: var(--color-secondary); }
+
+.mapa { width: 100%; max-width: 1200px; height: 500px; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+/* ---------------------------
+   UTILIDADES / ICONS / LISTAS
+   --------------------------- */
 .lista-aplicaciones li {
   display: flex;
   align-items: center;
@@ -286,74 +335,117 @@ main { margin-top: 110px; }
   margin-bottom: 12px;
   color: var(--color-secondary);
 }
-
 .lista-aplicaciones li i {
   color: var(--color-primary);
   margin-right: 12px;
   font-size: 1.2rem;
 }
 
-/* MEDIA QUERIES */
+/* ---------------------------
+   MEDIA QUERIES (RESPONSIVE)
+   --------------------------- */
+
+/* Tablet / small desktop breakpoint */
 @media (max-width: 900px) {
-  .quienes-somos { flex-direction: column; text-align: center; }
+
+  /* quienes somos -> column */
+  .quienes-somos { flex-direction: column; text-align: center; padding: 50px 5%; }
   .qs-imagen img { width: 80%; max-width: 380px; }
   .casa1, .casa2, .casa3 { transform: scale(0.7); }
 
+  /* sistemas -> column */
   .sist-dos-columnas { flex-direction: column; text-align: center; }
-  .sist-texto-col, .sist-cuadrado { width: 100%; }
-
+  .sist-texto-col, .sist-cuadrado { width: 100%; padding: 0 10px; margin-bottom: 18px; }
   .cuadrado-grid { display: flex; flex-direction: column; width: 100%; height: auto; gap: 18px; }
   .cuadrado-grid li i { font-size: 2.5rem; }
 
-  .sist-imagen { grid-template-columns: 1fr; }
-  .sist-imagen img { height: auto; }
+  .sist-imagen { grid-template-columns: 1fr; gap: 20px; width: 100%; }
+  .sist-imagen img { width: 100%; height: auto; max-height: none; }
 
-  .aplicaciones-contenedor { flex-direction: column; }
+  .aplicaciones-contenedor { flex-direction: column; align-items: center; text-align: center; }
+  .aplicaciones-carrusel { width: 100%; margin-bottom: 20px; }
+  .aplicaciones-texto { width: 100%; padding: 0; margin-top: 20px; }
 }
 
-/* ------------------------------- */
-/*    🔥 FIXES ESPECIALES IPHONE   */
-/* ------------------------------- */
+/* Mobile phones */
+@media (max-width: 768px) {
 
+  /* HERO: mantener alineado a la izquierda pero con más espacio a la derecha */
+  .contenido {
+    padding-right: 65px !important;   /* más espacio a la derecha para que no quede pegado */
+    padding-left: 30px !important;    /* suave a la izquierda para conservar alineación */
+    text-align: left !important;
+    align-items: flex-start !important;
+    width: 85%;
+  }
+
+  /* hacer los iconos/círculos del cuadro sistemas más pequeños para celular */
+  .cuadrado-grid {
+    width: 100%;
+    height: auto;
+    gap: 14px;
+  }
+  .cuadrado-grid li {
+    padding: 14px;
+  }
+  .cuadrado-grid li i {
+    font-size: 2.8rem; /* reducido para celular */
+    margin-bottom: 8px;
+  }
+
+  /* asegurar buen comportamiento del carrusel en pantallas chicas */
+  .carousel-item img {
+    min-height: 200px;
+    object-fit: cover;
+  }
+
+  /* quienes somos - imagen más contenida */
+  .qs-imagen img { max-width: 300px !important; width: 80%; }
+}
+
+/* Extra pequeño (phones very small) */
+@media (max-width: 420px) {
+  .contenido { padding: 2rem 20px; width: 92%; }
+  .aplicaciones-texto p { font-size: 1rem; }
+}
+
+/* ---------------------------
+   FIXES ESPECIALES IPHONE / SAFARI
+   - Usamos @supports(-webkit-touch-callout: none) para targetear Safari iOS
+   --------------------------- */
 @supports (-webkit-touch-callout: none) {
 
-  /* HERO – Corrección de fondo que no aparece */
+  /* HERO: Safari iOS no soporta background-attachment: fixed -> usar scroll */
   .hero {
     background-attachment: scroll !important;
     background-size: cover !important;
     background-position: center !important;
   }
 
-  /* HERO – Animación que aparece cortada */
+  /* Permitir la animación basada en opacity + blur en iOS;
+     no anulamos la animación global — solo nos aseguramos que se ejecute */
   .contenido {
-    transform: none !important;
-    opacity: 1 !important;
-    animation: none !important;
+    animation: fadeInIOS 1.3s ease-out forwards !important;
+    will-change: opacity, filter !important;
   }
 
-  /* SISTEMAS – Arreglar parallax */
-  .sistemas {
-    background-attachment: scroll !important;
-  }
+  /* Sistemas: evitar parallax problemático en iOS */
+  .sistemas { background-attachment: scroll !important; }
 
-  /* Imagen quienes somos demasiado grande en iPhone */
-  .qs-imagen img {
-    max-width: 300px !important;
-  }
+  /* Quienes somos imagen más contenida */
+  .qs-imagen img { max-width: 300px !important; }
 
-  /* Carrusel que se corta en Safari */
+  /* Carrusel: forzar object-fit / min-height para Safari */
   .carousel-item img {
-    min-height: 240px;
-    object-fit: cover;
+    min-height: 240px !important;
+    object-fit: cover !important;
   }
 }
 
-@media (max-width: 768px) {
-  .contenido {
-    padding-right: 65px !important;  /* más espacio a la derecha */
-    padding-left: 30px !important;   /* suave a la izquierda para mantener alineación */
-    text-align: left !important;
-    align-items: flex-start !important;
-    
-  }
-}
+/* ---------------------------
+   TIDY / PRINT / FINAL NOTES
+   --------------------------- */
+/* accessibility focus styles (small but helpful) */
+:focus { outline: 3px solid rgba(255,122,0,0.25); outline-offset: 3px; }
+
+/* END OF FILE */
